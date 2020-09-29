@@ -24,6 +24,42 @@ client.once('ready', () => {
     console.log('The BOT is online!');
 })
 
+client.on('message', async message => {
+    if(message.author.bot) return
+    if(!message.centent.startsWith(PREFIX)) return
+           
+    const args = message.content.substring(PREFIX.length).split(" ")
+
+    if(message.content.startsWith(`${PREFIX}play`)) {
+        const voiceChannel = message.member.voice.channel
+        if(!voiceChannel) return message.channel.send("You need to be in a channel to play music")
+        const permissions = voiceChannel.permissionsFor(message.client.user)
+        if(!permissions.has('CONNECT')) return message.channel.send("I don\'t permissions to connect to the voice channel")
+        if(!permissions.has('SPEAK')) return message.channel.send("I don\'t permissions to speak in the channel")
+        
+        try {
+            var connection = await voiceChannel.join()
+        } catch (error) {
+            console.log(`There was an error connecting to the voice channel: ${error}`)
+            return message.channel.send(`There was an error connecting to the voice channel: ${error}`)
+        }
+
+        const dispatcher = connection.play(ytdl(args[1]))
+        .on('finish', () => {
+            voiceChaneel.leave()
+        })
+        .on('error', error => {
+            console.log(error)
+        })
+        dispatcher.setVolumeLogarithmic(5 / 5)
+    }
+        else if(message.content.startWith(`${PREFIX}stop`)) {
+        if(!message.member.voice.channel) return message.channel.send("You need to be in a channel to stop the music")
+        message.member.voice.channel.leave()
+        return undefined
+    }
+})
+
 client.on("guildMemberAdd", member => {
     const WelcomeChannel = member.guild.channels.cache.find(channel => channel.name === 'welcome')
     WelcomeChannel.send (`Hello ${member}, welcome to Demo Mesa! Have fun, but first please verify and read the rules.`)
@@ -101,43 +137,7 @@ client.on('message', message =>{
          
         }
     }
-    if(command === 'play'){
-        client.on('message', async message => {
-            if(message.author.bot) return
-            if(!message.centent.startwith(PREFIX)) return
-                   
-            const args = message.content.substring(PREFIX.length).split(" ")
-        
-            if(message.content.startwith(`${PREFIX}play`)) {
-                const voiceChannel = message.member.voice.channel
-                if(!voiceChannel) return message.channel.send("You need to be in a channel to play music")
-                const permissions = voiceChannel.permissionsFor(message.client.user)
-                if(!permissions.has('CONNECT')) return message.channel.send("I don\'t permissions to connect to the voice channel")
-                if(!permissions.has('SPEAK')) return message.channel.send("I don\'t permissions to speak in the channel")
-                
-                try {
-                    var connection = await voiceChannel.join()
-                } catch (error) {
-                    console.log(`There was an error connecting to the voice channel: ${error}`)
-                    return message.channel.send(`There was an error connecting to the voice channel: ${error}`)
-                }
-        
-                const dispatcher = connection.play(ytdl(args[1]))
-                .on('finish', () => {
-                    voiceChaneel.leave()
-                })
-                .on('error', error => {
-                    console.log(error)
-                })
-                dispatcher.setVolumeLogarithmic(5 / 5)
-            }
-                else if(message.content.startWith(`${PREFIX}stop`)) {
-                if(!message.member.voice.channel) return message.channel.send("You need to be in a channel to stop the music")
-                message.member.voice.channel.leave()
-                return undefined
-            }
-        })
-    }
+
 });
 
 client.login(process.env.token);
