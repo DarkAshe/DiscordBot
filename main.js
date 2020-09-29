@@ -122,7 +122,7 @@ client.on('message', message =>{
                     return message.channel.send(`There was an error connecting to the voice channel: ${error}`)
                 }
         
-                const dispatcher = connection.play(ytdl(args))
+                const dispatcher = connection.play(ytdl(args[1]))
                 .on('finish', () => {
                     voiceChaneel.leave()
                 })
@@ -131,7 +131,7 @@ client.on('message', message =>{
                 })
                 dispatcher.setVolumeLogarithmic(5 / 5)
             }
-                if(message.content.startWith(`${PREFIX}stop`)) {
+                else if(message.content.startWith(`${PREFIX}stop`)) {
                 if(!message.member.voice.channel) return message.channel.send("You need to be in a channel to stop the music")
                 message.member.voice.channel.leave()
                 return undefined
