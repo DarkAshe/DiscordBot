@@ -25,7 +25,7 @@ client.once('ready', () => {
 
 client.on("guildMemberAdd", member => {
     const WelcomeChannel = member.guild.channels.cache.find(channel => channel.name === 'welcome')
-    WelcomeChannel.send (`Hello ${member}, welcome to Demo Mesa! Have fun, but first please read the rules.`)
+    WelcomeChannel.send (`Hello ${member}, welcome to Demo Mesa! Have fun, but first please verify and read the rules.`)
 })
 
 client.on('message', message =>{
