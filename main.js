@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config()
 const Discord = require('discord.js');
 
 const client = new Discord.Client({ disableEveryone: true});
@@ -28,11 +28,11 @@ client.once('ready', () => {
 
 client.on('message', async message => {
     if(message.author.bot) return
-    if(!message.content.startsWith(PREFIX)) return
+    if(!message.content.startsWith(prefix)) return
            
-    const args = message.content.substring(PREFIX.length).split(" ")
+    const args = message.content.substring(prefix.length).split(" ")
 
-    if(message.content.startsWith(`${PREFIX}play`)) {
+    if(message.content.startsWith(`${prefix}play`)) {
         const voiceChannel = message.member.voice.channel
         if(!voiceChannel) return message.channel.send("You need to be in a channel to play music")
         const permissions = voiceChannel.permissionsFor(message.client.user)
@@ -55,7 +55,7 @@ client.on('message', async message => {
         })
         dispatcher.setVolumeLogarithmic(5 / 5)
     }
-        else if(message.content.startWith(`${PREFIX}stop`)) {
+        else if(message.content.startWith(`${prefix}stop`)) {
         if(!message.member.voice.channel) return message.channel.send("You need to be in a channel to stop the music")
         message.member.voice.channel.leave()
         return undefined

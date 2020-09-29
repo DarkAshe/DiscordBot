@@ -1,10 +1,10 @@
 client.on('message', async message => {
     if(message.author.bot) return
-    if(!message.centent.startsWith(PREFIX)) return
+    if(!message.centent.startsWith(prefix)) return
            
-    const args = message.content.substring(PREFIX.length).split(" ")
+    const args = message.content.substring(prefix.length).split(" ")
 
-    if(message.content.startsWith(`${PREFIX}play`)) {
+    if(message.content.startsWith(`${prefix}play`)) {
         const voiceChannel = message.member.voice.channel
         if(!voiceChannel) return message.channel.send("You need to be in a channel to play music")
         const permissions = voiceChannel.permissionsFor(message.client.user)
