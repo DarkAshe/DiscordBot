@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 
 const client = new Discord.Client({ disableEveryone: true});
 
-const prefix = '-';
+const prefix = '!';
 
 const fs = require('fs');
 
@@ -27,7 +27,7 @@ client.once('ready', () => {
 
 client.on('message', async message => {
     if(message.author.bot) return
-    if(!message.centent.startsWith(PREFIX)) return
+    if(!message.content.startsWith(PREFIX)) return
            
     const args = message.content.substring(PREFIX.length).split(" ")
 
