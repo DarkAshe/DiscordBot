@@ -1,38 +1,33 @@
 require('dotenv').config()
-const Discord = require('discord.js');
+const Discord = require('discord.js')
+const request = require('request')
+const cheerio = require('cheerio')
+const ytdl = require('ytdl-core')
+const fs = require('fs')
+const PREFIX = '?'
 
-const client = new Discord.Client({ disableEveryone: true});
+const client = new Discord.Client()
 
-const prefix = '-';
+client.commands = new Discord.Collection()
 
-const fs = require('fs');
-
-const request = require('request');
-const cheerio = require('cheerio');
-const ytdl = require('ytdl-core');
-
-
-client.commands = new Discord.Collection();
-
-const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'))
 for(const file of commandFiles){
-    const command = require(`./commands/${file}`);
+    const command = require(`./commands/${file}`)
 
-    client.commands.set(command.name, command);
+    client.commands.set(command.name, command)
 }
 
-
 client.once('ready', () => {
-    console.log('The BOT is online!');
+    console.log('The BOT is online!')
 })
 
 client.on('message', async message => {
     if(message.author.bot) return
-    if(!message.content.startsWith(prefix)) return
+    if(!message.content.startsWith(PREFIX)) return
            
-    const args = message.content.substring(prefix.length).split(" ")
+    const args = message.content.substring(PREFIX.length).split(" ")
 
-    if(message.content.startsWith(`${prefix}play`)) {
+    if(message.content.startsWith(`${PREFIX}play`)) {
         const voiceChannel = message.member.voice.channel
         if(!voiceChannel) return message.channel.send("You need to be in a channel to play music")
         const permissions = voiceChannel.permissionsFor(message.client.user)
@@ -55,7 +50,7 @@ client.on('message', async message => {
         })
         dispatcher.setVolumeLogarithmic(5 / 5)
     }
-        else if(message.content.startWith(`${prefix}stop`)) {
+        else if(message.content.startWith(`${PREFIX}stop`)) {
         if(!message.member.voice.channel) return message.channel.send("You need to be in a channel to stop the music")
         message.member.voice.channel.leave()
         return undefined
@@ -88,29 +83,29 @@ client.on('message', async message => {
 });
 
 client.on('message', message =>{
-    if(!message.content.startsWith(prefix) || message.author.bot) return;
+    if(!message.content.startsWith(prefix) || message.author.bot) return
 
-    const args = message.content.slice(prefix.length).split(/ +/);
-    const command = args.shift().toLowerCase();
+    const args = message.content.slice(prefix.length).split(/ +/)
+    const command = args.shift().toLowerCase()
 
     if(command === 'demomesa'){
-       client.commands.get('demomesa').execute(message, args);
+       client.commands.get('demomesa').execute(message, args)
     }
     if(command === 'clear'){
-       client.commands.get('clear').execute(message, args);
+       client.commands.get('clear').execute(message, args)
     }
     if(command === 'stfu'){
-        client.commands.get('stfu').execute(message, args);
+        client.commands.get('stfu').execute(message, args)
     }
     if(command === 'osama'){
-        client.commands.get('osama').execute(message, args);
+        client.commands.get('osama').execute(message, args)
     }
     if(command === 'image'){
-        let args = message.content.substring(prefix.length).split(" ");
+        let args = message.content.substring(prefix.length).split(" ")
         switch (args[0]) {
             case 'image':
-            image(message);
-            break;
+            image(message)
+            break
         }
         function image(message){
  
@@ -121,25 +116,25 @@ client.on('message', message =>{
                     "Accept": "text/html",
                     "User-Agent": "Chrome"
                 }
-            };
+            }
         
             request(options, function(error, response, responseBody) {
          
-                $ = cheerio.load(responseBody);
+                $ = cheerio.load(responseBody)
          
-                var links = $(".image a.link");
+                var links = $(".image a.link")
          
-                var urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href"));
+                var urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href"))
                
-                console.log(urls);
+                console.log(urls)
          
                 // Send result
-                message.channel.send( urls[Math.floor(Math.random() * urls.length)]);
-            });
+                message.channel.send( urls[Math.floor(Math.random() * urls.length)])
+            })
          
         }
     }
 
 });
 
-client.login(process.env.token);
+client.login(process.env.token)
