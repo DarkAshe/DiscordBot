@@ -1,7 +1,9 @@
 require('dotenv').config();
 const Discord = require('discord.js');
 
-const prefix = '?';
+const client = new Discord.Client({ disableEveryone: true});
+
+const prefix = '-';
 
 const fs = require('fs');
 
@@ -9,7 +11,6 @@ const request = require('request');
 const cheerio = require('cheerio');
 const ytdl = require('ytdl-core');
 
-const client = new Discord.Client({ disableEveryone: true});
 
 client.commands = new Discord.Collection();
 
