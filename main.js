@@ -1,3 +1,4 @@
+--unhandled-rejections=strict
 require('dotenv').config()
 const Discord = require('discord.js');
 
@@ -40,7 +41,7 @@ client.on('message', async message => {
         
         try {
             var connection = await voiceChannel.join()
-        } catch (error) {
+        } catch(error) {
             console.log(`There was an error connecting to the voice channel: ${error}`)
             return message.channel.send(`There was an error connecting to the voice channel: ${error}`)
         }
