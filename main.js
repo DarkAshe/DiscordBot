@@ -28,6 +28,22 @@ client.on("guildMemberAdd", member => {
     WelcomeChannel.send (`Hello ${member}, welcome to Demo Mesa! Have fun, but first please verify and read the rules.`)
 })
 
+client.on('message', async message => {
+    if(message.author.bot) return;
+    if(message.channel.id === '')
+        await message.delete();
+    if(message.content.toLowerCase() === '!verify' && message.channel.id === '755102491246592040')
+    {   
+        await message.delete().catch(err => console.log(err));
+        const role = message.guild.roles.cache.get('755087485687562350');
+        if(role) {
+            try {
+                await message.member.roles.add(role);
+                console.log("Role added!");
+        }
+    }
+});
+
 client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
 
