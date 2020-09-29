@@ -1,14 +1,15 @@
+require('dotenv').config();
 const Discord = require('discord.js');
 
-const client = new Discord.Client({ disableEveryone: true});
-
-const prefix = '!';
+const prefix = '?';
 
 const fs = require('fs');
 
 const request = require('request');
 const cheerio = require('cheerio');
 const ytdl = require('ytdl-core');
+
+const client = new Discord.Client({ disableEveryone: true});
 
 client.commands = new Discord.Collection();
 
@@ -46,7 +47,7 @@ client.on('message', async message => {
 
         const dispatcher = connection.play(ytdl(args[1]))
         .on('finish', () => {
-            voiceChaneel.leave()
+            voiceChannel.leave()
         })
         .on('error', error => {
             console.log(error)
