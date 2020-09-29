@@ -23,6 +23,11 @@ client.once('ready', () => {
     console.log('The BOT is online!');
 })
 
+client.on("guildMemberAdd", member => {
+    const WelcomeChannel = member.guild.channels.cache.find(channel => channel.name === 'welcome')
+    WelcomeChannel.send (`Hello ${member}, welcome to Demo Mesa! Hhave fun, but first please read the rules.`)
+})
+
 client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
 
