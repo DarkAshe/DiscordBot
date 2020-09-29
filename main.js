@@ -40,6 +40,10 @@ client.on('message', async message => {
             try {
                 await message.member.roles.add(role);
                 console.log("Role added!");
+            }
+            catch(err) {
+                console.log(err);
+            }
         }
     }
 });
