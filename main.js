@@ -52,7 +52,7 @@ client.on('message', async message => {
     }
         else if(message.content.startWith(`${PREFIX}stop`)) {
         if(!message.member.voice.channel) return message.channel.send("You need to be in a channel to stop the music")
-        message.member.voice.channel.leave()
+        voice.channel.leave()
         return undefined
     }
 })
