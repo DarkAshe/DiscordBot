@@ -1,5 +1,6 @@
 require('dotenv').config()
-const {Discord, Util} = require('discord.js')
+const Discord = require('discord.js')
+const Util = require('discord.js')
 const request = require('request')
 const cheerio = require('cheerio')
 const ytdl = require('ytdl-core')
