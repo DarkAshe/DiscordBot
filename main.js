@@ -1,5 +1,5 @@
 require('dotenv').config()
-const Discord = require('discord.js')
+const Discord, Util = require('discord.js')
 const request = require('request')
 const cheerio = require('cheerio')
 const ytdl = require('ytdl-core')
@@ -38,7 +38,7 @@ client.on('message', async message => {
 
         const songInfo = await ytdl.getInfo(args[1])
         const song = {
-            title: songInfo.videoDetails.title,
+            title: Util.escapeMarkdown(songInfo.videoDetails.title),
             url: songInfo.videoDetails.video_url
         }
 
@@ -83,6 +83,44 @@ client.on('message', async message => {
         serverQueue.connection.dispatcher.end()
         message.channel.send("I have skipped the music for you")
         return undefined
+    } else if (message.content.startsWith(`${PREFIX}volume`)) {
+        if(!message.member.voice.channel) return message.channel.send("You need to be in a voice channel to change the volume")
+        if(!serverQueue) return message.channel.send("There is nothing playing")
+        if(!args[1]) return message.channel.send(`That volume is: **${serverQueue.volume}**`)
+        if(isNaN(args[1])) return message.channel.send("That is not a valid amount to change the volume")
+        serverQueue.volume = args[1]
+        serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 5)
+        message.channel.send(`I have changed the volume to **${args[1]}**`)
+        return undefined
+    } else if (message.content.startsWith(`${PREFIX}np`)) {
+        if(!serverQueue) return message.channel.send("There is nothing playing")
+        message.channel.send(`Now Playing: **${serverQueue.songs[0].title}**`)
+        return undefined
+    } else if (message.content.startsWith(`${PREFIX}queue`)) {
+        if (!serverQueue) return message.channel.send("There is nothing playing")
+        message.channel.send(`
+__**Song Queue:**__
+${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
+
+**Now Playing:** ${serverQueue.songs[0].title}
+        `, { split : true })
+        return undefined
+    } else if (message.content.startsWith(`${PREFIX}pause`)) {
+        if(!message.member.voice.channel) return message.channel.send("You need to be in a voice channel to use the pause command")
+        if(!serverQueue) return message.channel.send("There is nothing playing")
+        if(!serverQueue.playing) return message.channel.send("The music is already paused")
+        serverQueue.playing = false
+        serverQueue.connection.dispatcher.pause()
+        message.channel.send("I have paused the music for you")
+        return undefined
+    } else if (message.content.startsWith(`${PREFIX}resume`)) {
+        if(!message.member.voice.channel) return message.channel.send("You need to be in a voice channel to use the resume command")
+        if(!serverQueue) return message.channel.send("There is nothing playing")
+        if(serverQueue.playinf) return message.channel.send("The music is already playing")
+        serverQueue.playing = true
+        serverQueue.connection.dispatcher.resume()
+        message.channel.send("I have now resumed the music for you")
+        return undefined
     }
 })
 
@@ -104,6 +142,8 @@ function play(guild, song) {
         console.log(error)
     })
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5)
+
+    serverQueue.textChannel.send(`Start Playing: **${song.title}**`)
 }
 
 client.on("guildMemberAdd", member => {
