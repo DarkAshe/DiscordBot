@@ -7,7 +7,7 @@ const ytdl = require('ytdl-core')
 const fs = require('fs')
 const YouTube = require('simple-youtube-api')
 const queue = new Map()
-const youtube = new YouTube('AIzaSyBD_cnXTuKPE995FIQRwk9Myq-aSuySWp8')
+const youtube = new YouTube(preocess.env.GOOGLE_API_KEY)
 const PREFIX = '?'
 
 const client = new Discord.Client()
