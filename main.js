@@ -194,7 +194,6 @@ client.on('message', async message => {
     const command = args.shift().toLowerCase()
 
     if(command === 'image'){
-        let args = message.content.substring(prefix.length).split(" ")
         switch (args[0]) {
             case 'image':
             image(message)
