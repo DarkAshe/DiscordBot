@@ -8,7 +8,7 @@ const fs = require('fs')
 const YouTube = require('simple-youtube-api')
 const queue = new Map()
 const youtube = new YouTube(process.env.GOOGLE_API_KEY)
-const clear = require(`./commands/clear`)
+const image = require(`./commands/image`)
 const PREFIX = '?'
 
 const client = new Discord.Client()
