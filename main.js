@@ -187,11 +187,27 @@ client.on('message', async message => {
     }
 });
 
-client.on('message', message => {
+client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
 
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
-}
+
+    if(command === 'demomesa'){
+       client.commands.get('demomesa').execute(message, args);
+    }
+    if(command === 'clear'){
+       client.commands.get('clear').execute(message, args);
+    }
+    if(command === 'stfu'){
+        client.commands.get('stfu').execute(message, args);
+    }
+    if(command === 'osama'){
+        client.commands.get('osama').execute(message, args);
+    }
+    if(command === 'image'){
+        client.commands.get('image').execute(message, args);
+    }
+});
 
 client.login(process.env.token)
