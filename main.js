@@ -8,7 +8,6 @@ const fs = require('fs')
 const YouTube = require('simple-youtube-api')
 const queue = new Map()
 const youtube = new YouTube(process.env.GOOGLE_API_KEY)
-const image = require(`./commands/image`)
 const PREFIX = '?'
 
 const client = new Discord.Client()
@@ -187,5 +186,12 @@ client.on('message', async message => {
         }
     }
 });
+
+client.on('message', message => {
+    if(!message.content.startsWith(prefix) || message.author.bot) return;
+
+    const args = message.content.slice(prefix.length).split(/ +/);
+    const command = args.shift().toLowerCase();
+}
 
 client.login(process.env.token)
