@@ -187,10 +187,9 @@ client.on('message', async message => {
     }
 })
 
-client.on('message', async message => {
-    if (message.author.bot) return
-    if (!message.content.startsWith(PREFIX)) return
-    
+client.on('message', message =>{
+    if(!message.content.startsWith(PREFIX) || message.author.bot) return
+
     const args = message.content.slice(prefix.length).split(/ +/)
     const command = args.shift().toLowerCase()
 
@@ -207,7 +206,6 @@ client.on('message', async message => {
         client.commands.get('osama').execute(message, args)
     }
     if(command === 'image'){
-        let args = message.content.substring(prefix.length).split(" ")
         switch (args[0]) {
             case 'image':
             image(message)
