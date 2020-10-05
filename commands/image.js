@@ -2,7 +2,6 @@ module.exports = {
     name: 'image',
     description: "Send Images",
     execute(message, args){
-        let args = message.content.substring(prefix.length).split(" ")
         switch (args[0]) {
             case 'image':
             image(message)
