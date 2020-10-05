@@ -187,10 +187,10 @@ client.on('message', async message => {
     }
 })
 
-client.on('message', message =>{
-    if(!message.content.startsWith(PREFIX) || message.author.bot) return
+client.on('message', async message => {
+    if(!message.content.startsWith(PREFIX)) return
 
-    const args = message.content.slice(prefix.length).split(" ")
+    const args = message.content.slice(prefix.length).split(/ +/)
     const command = args.shift().toLowerCase()
 
     if(command === 'demomesa'){
@@ -206,6 +206,7 @@ client.on('message', message =>{
         client.commands.get('osama').execute(message, args)
     }
     if(command === 'image'){
+        let args = message.content.substring(prefix.length).split(" ")
         switch (args[0]) {
             case 'image':
             image(message)
@@ -214,7 +215,7 @@ client.on('message', message =>{
         function image(message){
  
             var options = {
-                url: "http://results.dogpile.com/serp?qc=images&q=" + "memes",
+                url: "http://results.dogpile.com/serp?qc=images&q=" + "Trump",
                 method: "GET",
                 headers: {
                     "Accept": "text/html",
