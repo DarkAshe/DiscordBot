@@ -187,29 +187,30 @@ client.on('message', async message => {
     }
 })
 
-client.on('message', message =>{
-    if(!message.content.startsWith(PREFIX) || message.author.bot) return;
+client.on('message', async message => {
+    if (message.author.bot) return
+    if (!message.content.startsWith(PREFIX)) return
 
-    const args = message.content.slice(prefix.length).split(/ +/);
-    const command = args.shift().toLowerCase();
+    const args = message.content.substring(PREFIX.length).split(" ")
+    const command = args.shift().toLowerCase()
 
     if(command === 'demomesa'){
-       client.commands.get('demomesa').execute(message, args);
+       client.commands.get('demomesa').execute(message, args)
     }
     if(command === 'clear'){
-       client.commands.get('clear').execute(message, args);
+       client.commands.get('clear').execute(message, args)
     }
     if(command === 'stfu'){
-        client.commands.get('stfu').execute(message, args);
+        client.commands.get('stfu').execute(message, args)
     }
     if(command === 'osama'){
-        client.commands.get('osama').execute(message, args);
+        client.commands.get('osama').execute(message, args)
     }
     if(command === 'image'){
-        let args = message.content.substring(prefix.length).split(" ");
+        let args = message.content.substring(prefix.length).split(" ")
         switch (args[0]) {
             case 'image':
-            image(message);
+            image(message)
             break;
         }
         function image(message){
