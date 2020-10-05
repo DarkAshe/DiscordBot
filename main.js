@@ -188,15 +188,4 @@ client.on('message', async message => {
     }
 });
 
-client.on('message', async message => {
-    if (message.author.bot) return
-    if (!message.content.startsWith(PREFIX)) return
-    const args = message.content.substring(PREFIX.length).split(" ")
-    const command = args.shift().toLowerCase()
-
-    if(command === 'clear'){
-        client.commands.get('clear').execute(message, args)
-    }
-});
-
 client.login(process.env.token)
