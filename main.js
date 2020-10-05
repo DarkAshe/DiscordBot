@@ -188,9 +188,8 @@ client.on('message', async message => {
 })
 
 client.on('message', async message => {
+    if (message.author.bot) return
     if(!message.content.startsWith(PREFIX)) return
-
-    const args = message.content.slice(prefix.length).split(" ")
     const command = args.shift().toLowerCase()
 
     if(command === 'demomesa'){
