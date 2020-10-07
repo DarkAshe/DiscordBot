@@ -20,6 +20,6 @@
     "request": "^2.88.2",
     "simple-youtube-api": "^5.2.1",
     "ytdl-core": "^3.3.0",
-    "type": "module"
+    "play": "module"
   }
 }
