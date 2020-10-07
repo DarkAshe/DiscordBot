@@ -4,7 +4,7 @@ module.exports = {
         async run(message){
  
             var options = {
-                url: "http://results.dogpile.com/serp?qc=images&q=" + "Trump",
+                url: "http://results.dogpile.com/serp?qc=images&q=" + "Memes",
                 method: "GET",
                 headers: {
                     "Accept": "text/html",
