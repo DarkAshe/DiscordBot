@@ -21,30 +21,6 @@ for(const file of commandFiles){
     client.commands.set(command.name, command)
 }
 
-client.on('message', message =>{
-    if(!message.content.startsWith(PREFIX)) return;
-    if(!message.author.bot) return;
-
-    const args = message.content.slice(PREFIX.length).split(/ +/);
-    const command = args.shift().toLowerCase();
-
-    if(command === 'demomesa'){
-       client.commands.get('demomesa').execute(message, args);
-    }
-    if(command === 'clear'){
-       client.commands.get('clear').execute(message, args);
-    }
-    if(command === 'stfu'){
-        client.commands.get('stfu').execute(message, args);
-    }
-    if(command === 'osama'){
-        client.commands.get('osama').execute(message, args);
-    }
-    if(command === 'image'){
-        client.commands.get('image').execute(message, args);
-    }
-});
-
 client.once('ready', () => {
     console.log('The BOT is online!')
 })
@@ -164,27 +140,7 @@ ${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
     }
 })
 
-function play(guild, song) {
-    const serverQueue = queue.get(guild.id)
-
-    if (!song) {
-        serverQueue.voiceChannel.leave()
-        queue.delete(guild.id)
-        return
-    }
-
-    const dispatcher = serverQueue.connection.play(ytdl(song.url))
-        .on('finish', () => {
-            serverQueue.songs.shift()
-            play(guild, serverQueue.songs[0])
-        })
-        .on('error', error => {
-            console.log(error)
-        })
-    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5)
-
-    serverQueue.textChannel.send(`Start Playing: **${song.title}**`)
-}
+import { play } from './functions/play.js'
 
 client.on("guildMemberAdd", member => {
     const WelcomeChannel = member.guild.channels.cache.find(channel => channel.name === 'welcome')
@@ -208,6 +164,23 @@ client.on('message', async message => {
                 console.log(err);
             }
         }
+    }
+});
+
+client.on('message', message =>{
+    if(!message.content.startsWith(PREFIX) || message.author.bot) return;
+
+    const args = message.content.slice(PREFIX.length).split(/ +/);
+    const command = args.shift().toLowerCase();
+
+    if(command === 'clear'){
+       client.commands.get('clear').execute(message, args);
+    }
+    if(command === 'osama'){
+        client.commands.get('osama').execute(message, args);
+    }
+    if(command === 'image'){
+        client.commands.get('image').execute(message, args);
     }
 });
 
