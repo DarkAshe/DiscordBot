@@ -140,7 +140,27 @@ ${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
     }
 })
 
-import { play } from './functions/play.js'
+-function play(guild, song) {
+    const serverQueue = queue.get(guild.id)
+
+    if (!song) {
+        serverQueue.voiceChannel.leave()
+        queue.delete(guild.id)
+        return
+    }
+
+    const dispatcher = serverQueue.connection.play(ytdl(song.url))
+        .on('finish', () => {
+            serverQueue.songs.shift()
+            play(guild, serverQueue.songs[0])
+        })
+        .on('error', error => {
+            console.log(error)
+        })
+    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5)
+
+    serverQueue.textChannel.send(`Start Playing: **${song.title}**`)
+}
 
 client.on("guildMemberAdd", member => {
     const WelcomeChannel = member.guild.channels.cache.find(channel => channel.name === 'welcome')
