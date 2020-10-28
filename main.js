@@ -194,7 +194,7 @@ client.on('message', message =>{
     const command = args.shift().toLowerCase();
 
     if(command === 'clear'){
-        message.channel.bulkDelete(99);
+       client.commands.get('clear').execute(message, args);
     }
     if(command === 'osama'){
         client.commands.get('osama').execute(message, args);
