@@ -167,7 +167,7 @@ client.on("guildMemberAdd", member => {
 })
 
 client.on('message', async message => {
-    if(message.author.bot) return
+    if(message.author.bot) return;
     if(message.channel.id === '755102491246592040')
         await message.delete();
     if(message.content.toLowerCase() === '!verify' && message.channel.id === '755102491246592040')
