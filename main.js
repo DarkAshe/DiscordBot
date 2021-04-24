@@ -2,12 +2,12 @@ require('dotenv').config()
 const Discord = require('discord.js')
 const Util = require('discord.js')
 const request = require('request')
-const cheerio = require('cheerio')
+const cheerio = require('cheerio') //Ignore this
 const ytdl = require('ytdl-core')
-const fs = require('fs')
+const fs = require('fs') //Ignore this
 const YouTube = require('simple-youtube-api')
 const queue = new Map()
-const youtube = new YouTube(process.env.GOOGLE_API_KEY)
+const youtube = new YouTube('AIzaSyBD_cnXTuKPE995FIQRwk9Myq-aSuySWp8')
 const PREFIX = '?'
 
 const client = new Discord.Client()
@@ -168,40 +168,23 @@ client.on("guildMemberAdd", member => {
 })
 
 client.on('message', async message => {
-    if(message.author.bot) return
+    if(message.author.bot) return;
     if(message.channel.id === '755102491246592040')
         await message.delete();
     if(message.content.toLowerCase() === '!verify' && message.channel.id === '755102491246592040')
     {   
-        await message.delete().catch(err => console.log(err));
-        const role = message.guild.roles.cache.get('755087485687562350');
+        await message.delete().catch(err => console.log(err))
+        const role = message.guild.roles.cache.get('755087485687562350')
         if(role) {
             try {
-                await message.member.roles.add(role);
-                console.log("Role added!");
+                await message.member.roles.add(role)
+                console.log("Role added!")
             }
             catch(err) {
-                console.log(err);
+                console.log(err)
             }
         }
     }
-});
-
-client.on('message', message =>{
-    if(!message.content.startsWith(PREFIX) || message.author.bot) return;
-
-    const args = message.content.slice(PREFIX.length).split(/ +/);
-    const command = args.shift().toLowerCase();
-
-    if(command === 'clear'){
-       client.commands.get('clear').execute(message, args);
-    }
-    if(command === 'osama'){
-        client.commands.get('osama').execute(message, args);
-    }
-    if(command === 'image'){
-        client.commands.get('image').execute(message, args);
-    }
-});
+})
 
 client.login(process.env.token)
